@@ -1,49 +1,28 @@
-{
-  "name": "Navigate unpinned tabs",
-  "description": "Ignore pinned tabs with using the keyboard shortcuts ctrl/cmd + [1-8].",
-  "homepage_url": "https://github.com/naxoc/navigate-unpinned",
-  "manifest_version": 2,
-  "version": "1.0",
-  "background": {
-    "scripts": ["background.js"]
-  },
-
-  "commands": {
-    "1": {
-      "suggested_key": { "default": "Ctrl+1" },
-      "description": "Focus tab 1"
-    },
-    "2": {
-      "suggested_key": { "default": "Ctrl+2" },
-      "description": "Focus tab 2"
-    },
-    "3": {
-      "suggested_key": { "default": "Ctrl+3" },
-      "description": "Focus tab 3"
-    },
-    "4": {
-      "suggested_key": { "default": "Ctrl+4" },
-      "description": "Focus tab 4"
-    },
-    "5": {
-      "suggested_key": { "default": "Ctrl+5" },
-      "description": "Focus tab 5"
-    },
-    "6": {
-      "suggested_key": { "default": "Ctrl+6" },
-      "description": "Focus tab 6"
-    },
-    "7": {
-      "suggested_key": { "default": "Ctrl+7" },
-      "description": "Focus tab 7"
-    },
-    "8": {
-      "suggested_key": { "default": "Ctrl+8" },
-      "description": "Focus tab 8"
-    }
-  },
-
-  "permissions": [
-    "tabs"
-  ]
-}
+browser.commands.onCommand.addListener(command => {
+  browser.tabs
+    .query({
+      currentWindow: true,
+      pinned: true
+    })
+    .then(pinned => {
+      const numPinned = pinned.length;
+      if (numPinned < 1) {
+        return;
+      }
+      const desiredIdx = parseInt(command) - 1;
+      // If there are pinned tabs - select the tab with the desired index 
+      // ignoring the pinned tabs.
+      browser.tabs
+        .query({
+          currentWindow: true,
+          index: numPinned + desiredIdx
+        })
+        .then(toSelect => {
+          for (const tab of toSelect) {
+            browser.tabs.update(tab.id, {
+              active: true
+            });
+          }
+        });
+    });
+});
