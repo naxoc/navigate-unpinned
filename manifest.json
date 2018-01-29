@@ -3,7 +3,7 @@
   "description": "Ignore pinned tabs with using the keyboard shortcuts ctrl/cmd + [1-8]. If you have 2 pinned tabs and 3 unpinned and enter ctrl+1, you will be taken to the first unpinned tab.",
   "homepage_url": "https://github.com/naxoc/navigate-unpinned",
   "manifest_version": 2,
-  "version": "1.0",
+  "version": "1.1",
   "background": {
     "scripts": ["background.js"]
   },
