@@ -41,9 +41,5 @@
       "suggested_key": { "default": "Ctrl+8" },
       "description": "Focus tab 8"
     }
-  },
-
-  "permissions": [
-    "tabs"
-  ]
+  }
 }
